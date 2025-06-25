@@ -1,5 +1,6 @@
 import streamlit as st
 import speech_recognition as sr
+import os
 
 reponses = {
     "salut": [
@@ -418,7 +419,13 @@ def repondre_utilisateur(message):
 
 st.title("Chatbot Vocal Simple")
 
-mode = st.radio("Choisissez le mode d'entrée:", ("Texte", "Voix"))
+EN_LOCAL = os.environ.get("SYSTEMROOT") is not None
+
+if EN_LOCAL:
+    mode = st.radio("Choisissez le mode d'entrée:", ("Texte", "Voix"))
+else:
+    st.warning("⚠️ Le mode vocal n'est pas disponible sur Streamlit Cloud.")
+    mode = "Texte"
 
 if mode == "Texte":
     texte = st.text_input("Entrez votre message :")
